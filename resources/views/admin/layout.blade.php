@@ -245,7 +245,11 @@
 
                 <!-- Main content -->
                 <section class="content">
-
+                    @if(Session()->has('exito'))
+                    <div class="alert alert-success">
+                        {{ Session('exito') }}
+                    </div>
+                    @endif
                     @yield('contenido')
 
                 </section>

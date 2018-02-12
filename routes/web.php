@@ -10,15 +10,16 @@
   | contains the "web" middleware group. Now create something great!
   |
  */
+// Rutas web
+Route::get('/', 'PagesController@home');
+Route::get('blog/{id}', 'PostsController@show');
 // Rutas de administración.
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => 'auth'], function () {
     Route::get('/', 'AdminController@index')->name('admin');
     Route::get('posts', 'PostsController@index')->name('admin.posts.index');
     Route::get('posts/create', 'PostsController@create')->name('admin.posts.create');
-    
+    Route::post('posts/store', 'PostsController@store')->name('admin.posts.strore');
 });
-
-Route::get('/', 'PagesController@home');
 
 // Authentication Routes...
 Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');

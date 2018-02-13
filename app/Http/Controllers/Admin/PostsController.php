@@ -36,6 +36,7 @@ class PostsController extends Controller {
         $post->excerpt = $request->get('excerpt');
         $post->category_id = $request->get('category');
         $post->published_at = (!is_null($request->get('published_at'))) ? Carbon::parse($request->get('published_at')) : null;
+        $post->url = str_slug($post->title);
         $post->save();
         $post->tags()->attach($request->get('tags'));
         return back()->with('exito','Tu publicación ha sido creada.');

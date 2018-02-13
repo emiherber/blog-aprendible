@@ -12,6 +12,14 @@ class Post extends Model
      * Definimos como una instancia de carbon
      */
     protected $dates = ['published_at'];
+
+    /*
+     * Redifinimos por cual parametros queremos que nos 
+     * devuelva un post
+     */
+    public function getRoutekeyName(){
+        return 'url';
+    }
     
     public function category(){
         // un post pertenece a una categoria

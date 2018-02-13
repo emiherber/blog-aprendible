@@ -16,10 +16,10 @@
                 </header>
                 <h1>{{ $post->title }}</h1>
                 <div class="divider"></div>
-                <p>{{ $post->excerpt }}</p>
+                <p>{!! nl2br(e($post->excerpt)) !!}</p>
                 <footer class="container-flex space-between">
                     <div class="read-more">
-                        <a href="/blog/{{ $post->id}}" class="text-uppercase c-green">Leer más</a>
+                        <a href="/blog/{{ $post->url }}" class="text-uppercase c-green">Leer más</a>
                     </div>
                     <div class="tags container-flex">
                         @forelse($post->tags as $tag)

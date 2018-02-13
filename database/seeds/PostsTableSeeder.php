@@ -30,6 +30,7 @@ class PostsTableSeeder extends Seeder
         $post->body = 'Cuerpo de mi primer post';
         $post->published_at = \Carbon\Carbon::now();
         $post->category_id = 1;
+        $post->url = str_slug('Mi primer post');
         $post->save();
         
         $post = new Post;
@@ -38,6 +39,7 @@ class PostsTableSeeder extends Seeder
         $post->body = 'Cuerpo de mi segundo post';
         $post->published_at = \Carbon\Carbon::now()->subDay(2);
         $post->category_id = 2;
+        $post->url = str_slug('Mi segundo post');
         $post->save();
         
         $post = new Post;
@@ -46,6 +48,7 @@ class PostsTableSeeder extends Seeder
         $post->body = 'Cuerpo de mi tercer post';
         $post->published_at = \Carbon\Carbon::now()->subDay(1);
         $post->category_id = 1;
+        $post->url = str_slug('Mi tercer post');
         $post->save();
     }
 }

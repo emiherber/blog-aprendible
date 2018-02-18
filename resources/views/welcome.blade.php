@@ -11,7 +11,7 @@
                 <figure>
                     <img 
                         class="img-responsive" 
-                        src="{{ $post->photos->first()->url }}" 
+                        src="{{ Storage::url($post->photos->first()->url) }}" 
                         alt="imagen del articulo"
                     >
                 </figure>
@@ -22,7 +22,7 @@
                             @if ($loop->iteration === 4)
                                 <div class="overlay">{{ $post->photos->count() }} Fotos</div>
                             @endif
-                            <img class="img-responsive" src="{{ $photo->url }}" alt="">
+                            <img class="img-responsive" src="{{ Storage::url($photo->url) }}" alt="">
                         </figure>
                     @endforeach
                 </div>

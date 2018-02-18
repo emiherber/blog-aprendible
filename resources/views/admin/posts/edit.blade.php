@@ -24,7 +24,7 @@
                             <button class="btn btn-danger btn-xs" style="position:absolute;">
                                 <i class="fa fa-remove"></i>
                             </button>
-                            <img src="{{ url($photo->url) }}" class="img-rounded" width="140" height="140px">
+                            <img src="{{ Storage::url($photo->url) }}" class="img-rounded" width="140" height="140px">
                         </form>
                     @endforeach
                 </div>
@@ -96,19 +96,19 @@
                             placeholder="Ingrese aquí la fecha de publicación"
                         >
                     </div>
-                    <div class="form-group {{ $errors->has('category') ? 'has-error':'' }}">
+                    <div class="form-group {{ $errors->has('category_id') ? 'has-error':'' }}">
                         <label for="categoria de la publicación">
                             Categorías
                         </label>
-                        <select name="category" class="form-control select2">
+                        <select name="category_id" class="form-control select2">
                             <option value="">Seleccione una categoría</option>
                             @foreach($categorias as $categoria)
                             <option 
-                                {{ (old('category', $post->category_id) == $categoria->id) ? 'selected': ''}}
+                                {{ (old('category_id', $post->category_id) == $categoria->id) ? 'selected': ''}}
                                 value="{{ $categoria->id }}">{{ $categoria->name }}</option>
                             @endforeach
                         </select>
-                        {!! $errors->first('category','<span class="help-block">:message</span>')!!}
+                        {!! $errors->first('category_id','<span class="help-block">:message</span>')!!}
                     </div>
                     <div class="form-group {{ $errors->has('tags') ? 'has-error':'' }}">
                         <label for="etiquetas de la publicación">

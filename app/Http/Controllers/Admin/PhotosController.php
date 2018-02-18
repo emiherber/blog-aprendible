@@ -14,19 +14,14 @@ class PhotosController extends Controller
         $this->validate(request(), [
             'photo' => 'image|max:2048'
         ]);
-        $photo = request()->file('photo')->store('public');
-        Photo::create([
-            'url' => Storage::url($photo),
-            'post_id' => $post->id
+
+        $post->photos()->create([
+            'url' => request()->file('photo')->store('posts')
         ]);
     }
 
     public function destroy(Photo $photo){
         $photo->delete();
-        $photoPath = str_replace('storage', 'public', $photo->url);
-        
-        Storage::delete($photoPath);
-
         return back()->with('exito', 'Imagen eliminada.');
     }
 }

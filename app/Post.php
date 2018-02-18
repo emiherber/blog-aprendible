@@ -7,7 +7,10 @@ use Carbon\Carbon;
 
 class Post extends Model
 {
-    protected $guarded = [];
+    protected $fillable = [
+        'title','body','excerpt','category_id','published_at','iframe'
+    ];
+
     /*
      * Definimos como una instancia de carbon
      */
@@ -48,5 +51,30 @@ class Post extends Model
     public function setTitleAttribute($title){
         $this->attributes['title'] = $title;
         $this->attributes['url'] = str_slug($title);
+    }
+
+    public function setPublishedAtAttribute($published_at){
+        $this->attributes['published_at'] = null;
+ 
+        if(!is_null($published_at)){
+            $this->attributes['published_at'] = Carbon::parse($published_at);
+        }       
+    }
+
+    public function setCategoryIdAttribute($category){
+        if (Category::find($category)) {
+            $this->attributes['category_id'] = $category;
+        }else{
+            $this->attributes['category_id'] = Category::create(['name' => $category])->id;
+        }
+              
+    }
+
+    public function syncTags($tags){
+        $tagIds = Collect($tags)->map(function($tag){
+            return Tag::find($tag)? $tag : Tag::create(['name' => $tag])->id;
+        });
+
+        return $this->tags()->sync($tagIds);
     }
 }

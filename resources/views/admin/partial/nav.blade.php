@@ -15,7 +15,15 @@
                 <a href="{{ route('admin.posts.index') }}"><i class="fa fa-eye"></i> Ver Posts</a>
             </li>
             <li class="{{ request()->is('admin/posts/create') ? 'active' : ''}}">
-                <a href="{{ route('admin.posts.create')}}"><i class="fa fa-pencil"></i> Crear Post</a>
+                <a 
+                    href="#" 
+                    data-toggle="modal" 
+                    data-target="#myModal"
+                    tabindex="-1"
+                >
+                    <i class="fa fa-pencil"></i> 
+                    Crear Post
+                </a>
             </li>
         </ul>
     </li>

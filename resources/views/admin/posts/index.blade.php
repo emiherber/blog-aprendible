@@ -13,9 +13,18 @@
 
 
 @section('contenido')
-<div class="box">
+<div class="box box-primary">
     <div class="box-header">
         <h3 class="box-title">Lista de publicaciones</h3>
+        <button 
+            class="btn btn-primary pull-right"
+            data-toggle="modal" 
+            data-target="#myModal"
+            tabindex="-1"
+        >
+            <i class="fa fa-plus"></i>
+            Crear Publicación
+        </button>
     </div>
     <!-- /.box-header -->
     <div class="box-body">
@@ -33,7 +42,18 @@
                     <td>{{ $post->id }}</td>
                     <td>{{ $post->title }}</td>
                     <td>
-                        <a href="#" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i></a>
+                            <a 
+                                href="{{ route('post.show', $post) }}" 
+                                class="btn btn-default btn-xs"
+                                target="_blank"
+                            >
+                                <i class="fa fa-eye"></i>
+                            </a>
+                        <a 
+                        href="{{ route('admin.posts.edit', $post) }}"
+                            class="btn btn-info btn-xs">
+                            <i class="fa fa-pencil"></i>
+                        </a>
                         <a href="#" class="btn btn-danger btn-xs"><i class="fa fa-times"></i></a>
                     </td>
                 </tr>

@@ -357,6 +357,6 @@
         <!-- AdminLTE App -->
         <script src="/adminlte/js/app.min.js"></script>
         <!-- page script -->
-        
+        @include('admin.posts.create')
     </body>
 </html>

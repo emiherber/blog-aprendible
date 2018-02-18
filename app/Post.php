@@ -31,9 +31,22 @@ class Post extends Model
         return $this->belongsToMany(Tag::class);
     }
     
+    public function photos(){
+        // un post tiene muchas fotos
+        return $this->HasMany(Photo::class);
+    }
+
     public function scopePublished($query){
         $query->whereNotnull('published_at')
                 ->where('published_at', '<=', Carbon::now())
                 ->latest('published_at');
+    }
+
+    /** 
+     * Mutador setAtributoattribute(valor)
+    */
+    public function setTitleAttribute($title){
+        $this->attributes['title'] = $title;
+        $this->attributes['url'] = str_slug($title);
     }
 }

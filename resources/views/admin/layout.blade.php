@@ -352,11 +352,13 @@
         <script src="/adminlte/plugins/jQuery/jquery-2.2.3.min.js"></script>
         <!-- Bootstrap 3.3.6 -->
         <script src="/adminlte/bootstrap/js/bootstrap.min.js"></script>
+        @unless(request()->is('admin/posts/*'))
+            <!-- page script -->
+            @include('admin.posts.create')
+        @endunless
         <!-- Me incluye los archivos js -->
         @stack('scripts')
         <!-- AdminLTE App -->
         <script src="/adminlte/js/app.min.js"></script>
-        <!-- page script -->
-        @include('admin.posts.create')
     </body>
 </html>

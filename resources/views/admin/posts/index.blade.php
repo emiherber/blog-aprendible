@@ -42,19 +42,31 @@
                     <td>{{ $post->id }}</td>
                     <td>{{ $post->title }}</td>
                     <td>
-                            <a 
-                                href="{{ route('post.show', $post) }}" 
-                                class="btn btn-default btn-xs"
-                                target="_blank"
-                            >
-                                <i class="fa fa-eye"></i>
-                            </a>
+                        <a 
+                            href="{{ route('post.show', $post) }}" 
+                            class="btn btn-default btn-xs"
+                            target="_blank"
+                        >
+                            <i class="fa fa-eye"></i>
+                        </a>
                         <a 
                         href="{{ route('admin.posts.edit', $post) }}"
                             class="btn btn-info btn-xs">
                             <i class="fa fa-pencil"></i>
                         </a>
-                        <a href="#" class="btn btn-danger btn-xs"><i class="fa fa-times"></i></a>
+                        <form 
+                            method="post" 
+                            action="{{ route('admin.posts.destroy', $post) }}" 
+                            style="display: inline;"
+                        >
+                            {{ csrf_field() }} {{ method_field('delete') }}
+                            <button 
+                                class="btn btn-danger btn-xs"
+                                onclick="return confirm('¿Esta seguro de eliminar la publicación?')"
+                            >
+                                <i class="fa fa-times"></i>
+                            </button>
+                        </form>                        
                     </td>
                 </tr>
                 @endforeach

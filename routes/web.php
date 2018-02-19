@@ -24,6 +24,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => 'auth
     Route::post('posts/store', 'PostsController@store')->name('admin.posts.strore');
     Route::get('posts/{post}', 'PostsController@edit')->name('admin.posts.edit'); 
     Route::put('posts/{post}', 'PostsController@update')->name('admin.posts.update');
+    Route::delete('posts/{post}', 'PostsController@destroy')->name('admin.posts.destroy');
     
     Route::post('posts/{post}/photos', 'PhotosController@store')->name('admin.posts.photos.strore');
     Route::delete('photos/{photo}', 'PhotosController@destroy')->name('admin.photos.destroy');

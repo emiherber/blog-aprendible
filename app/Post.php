@@ -24,6 +24,15 @@ class Post extends Model
         return 'url';
     }
     
+    protected static function boot(){
+        parent::boot();
+        static::deleting(function($post){
+            $post->tags()->detach();
+            // covierto en una colección y por cada photo llama al metodo delete.
+            $post->photos->each->delete();
+        });
+    }
+    
     public function category(){
         // un post pertenece a una categoria
         return $this->belongsTo(Category::class);

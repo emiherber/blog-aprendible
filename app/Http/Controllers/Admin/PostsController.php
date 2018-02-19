@@ -44,5 +44,9 @@ class PostsController extends Controller {
         $post->update($request->all());
         return redirect()->route('admin.posts.edit', $post)->with('exito','Tu publicación ha sido guardada.');
     }
-
+    
+    public function destroy(Post $post){
+        $post->delete();
+        return redirect()->route('admin.posts.index')->with('exito', 'Tu publicación ha sido eliminada.');
+    }
 }

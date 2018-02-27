@@ -17,12 +17,6 @@ class PostsController extends Controller {
         return view('admin.posts.index', compact('posts'));
     }
 
-    // public function create() {
-    //     $tags = Tag::Orderby('name')->get();
-    //     $categorias = Category::Orderby('name')->get();
-    //     return view('admin.posts.create', compact('categorias', 'tags'));
-    // }
-
     public function store(Request $request) {
         $this->validate($request,[
             'title' => 'required'
@@ -42,6 +36,8 @@ class PostsController extends Controller {
 
     public function update(StorePostRequest $request, Post $post) {
         $post->update($request->all());
+        $post->synctags($request->get('tags'));
+
         return redirect()->route('admin.posts.edit', $post)->with('exito','Tu publicación ha sido guardada.');
     }
     

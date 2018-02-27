@@ -14,7 +14,7 @@ class AddColumnPostsUrl extends Migration
     public function up()
     {
         Schema::table('posts', function (Blueprint $table) {
-            $table->string('url')->default('sin definir');
+            $table->string('url')->unique()->default('sin definir');
         });
     }
 

@@ -1,7 +1,7 @@
 <!-- Modal -->
 <div class="modal fade" id="myModal" role="dialog">
     <!-- inicio form -->
-    <form method="POST" action="{{ route('admin.posts.strore','#create') }}">
+    <form method="POST" action="{{ route('admin.posts.store','#create') }}">
         {{ csrf_field() }}
         <div class="modal-dialog">
         <!-- Modal content-->

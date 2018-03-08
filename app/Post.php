@@ -8,7 +8,7 @@ use Carbon\Carbon;
 class Post extends Model
 {
     protected $fillable = [
-        'title','body','excerpt','category_id','published_at','iframe'
+        'title','body','excerpt','category_id','published_at','iframe','user_id'
     ];
 
     /*
@@ -28,11 +28,20 @@ class Post extends Model
         parent::boot();
         static::deleting(function($post){
             $post->tags()->detach();
-            // covierto en una colección y por cada photo llama al metodo delete.
+            // comvierto en una colección y por cada photo llama al metodo delete.
             $post->photos->each->delete();
         });
     }
+
+    public static function create(array $attributes = []){
+        $attributes['user_id'] = auth()->id();
+        $post = static::query()->create($attributes);
+        return $post;
+    }
     
+    /**
+     * inicio Relaciones
+     */
     public function category(){
         // un post pertenece a una categoria
         return $this->belongsTo(Category::class);
@@ -48,11 +57,24 @@ class Post extends Model
         return $this->HasMany(Photo::class);
     }
 
-    public function scopePublished($query){
-        $query->whereNotnull('published_at')
-                ->where('published_at', '<=', Carbon::now())
-                ->latest('published_at');
+    public function syncTags($tags){
+        $tagIds = Collect($tags)->map(function($tag){
+            return Tag::find($tag)? $tag : Tag::create(['name' => $tag])->id;
+        });
+
+        return $this->tags()->sync($tagIds);
     }
+    
+    public function isPublished(){
+        return !is_null($this->published_at) && $this->published_at < today();
+    }
+
+    public function owner(){
+        return $this->belongsTo(User::class, 'user_id');
+    }
+    /**
+     * Fin relaciones
+     */
 
     /** 
      * Mutador setAtributoattribute(valor)
@@ -79,12 +101,43 @@ class Post extends Model
         }
               
     }
+    /**
+     * Fin Mutadores
+     */
 
-    public function syncTags($tags){
-        $tagIds = Collect($tags)->map(function($tag){
-            return Tag::find($tag)? $tag : Tag::create(['name' => $tag])->id;
-        });
-
-        return $this->tags()->sync($tagIds);
+    /**
+     * Inicio scope
+     */
+    public function scopePublished($query){
+        $query->whereNotnull('published_at')
+                ->where('published_at', '<=', Carbon::now())
+                ->latest('published_at');
     }
+
+    public function scopeAllowed($query){
+        if(auth()->user()->can('view', $this)){
+            return $query;
+        }
+        return $query->where('user_id', auth()->id());
+    }
+    /**
+     * Fin scope
+     */
+
+    /**
+     * Inicio funciones auxiliares
+     */
+    public function viewType($ubicacion = ''){
+        if ($this->photos->count() === 1){
+            return 'posts.photo';
+        }elseif($this->photos->count() > 1){
+            return $ubicacion === 'home' ? 'posts.carousel-preview': 'posts.carousel';
+        }elseif($this->iframe){
+            return 'posts.iframe';
+        }
+        return 'posts.text';
+    }
+    /**
+     * Fin funciones auxiliares
+     */  
 }

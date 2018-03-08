@@ -2,8 +2,8 @@
 
 @section('contenido-header')
 <h1>
-    Posts
-    <small>Listado de Publicaciones</small>
+    Usuarios
+    <small>Listado de usuarios</small>
 </h1>
 <ol class="breadcrumb">
     <li><a href="{{ route('admin') }}"><i class="fa fa-dashboard"></i> Inicio</a></li>
@@ -15,7 +15,7 @@
 @section('contenido')
 <div class="box box-primary">
     <div class="box-header">
-        <h3 class="box-title">Lista de publicaciones</h3>
+        <h3 class="box-title">Lista de usuarios</h3>
         <button 
             class="btn btn-primary pull-right"
             data-toggle="modal" 
@@ -23,7 +23,7 @@
             tabindex="-1"
         >
             <i class="fa fa-plus"></i>
-            Crear Publicación
+            Crear Usuario
         </button>
     </div>
     <!-- /.box-header -->
@@ -32,37 +32,40 @@
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Título</th>
+                    <th>Nombre</th>
+                    <th>E-mail</th>
+                    <th>Roles</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach($posts as $post)
+                @foreach($users as $user)
                 <tr>
-                    <td>{{ $post->id }}</td>
-                    <td>{{ $post->title }}</td>
+                    <td>{{ $user->id }}</td>
+                    <td>{{ $user->name }}</td>
+                    <td>{{ $user->email }}</td>
+                    <td>{{ $user->getRoleNames()->implode(', ') }}</td>
                     <td>
                         <a 
-                            href="{{ route('posts.show', $post) }}" 
+                            href="{{ route('admin.users.show', $user) }}" 
                             class="btn btn-default btn-xs"
-                            target="_blank"
                         >
                             <i class="fa fa-eye"></i>
                         </a>
                         <a 
-                        href="{{ route('admin.posts.edit', $post) }}"
+                        href="{{ route('admin.users.edit', $user) }}"
                             class="btn btn-info btn-xs">
                             <i class="fa fa-pencil"></i>
                         </a>
                         <form 
                             method="post" 
-                            action="{{ route('admin.posts.destroy', $post) }}" 
+                            action="{{ route('admin.users.destroy', $user) }}" 
                             style="display: inline;"
                         >
                             {{ csrf_field() }} {{ method_field('delete') }}
                             <button 
                                 class="btn btn-danger btn-xs"
-                                onclick="return confirm('¿Esta seguro de eliminar la publicación?')"
+                                onclick="return confirm('¿Esta seguro de eliminar el usuario?')"
                             >
                                 <i class="fa fa-times"></i>
                             </button>

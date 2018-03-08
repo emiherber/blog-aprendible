@@ -170,36 +170,19 @@
                                         <img src="/adminlte/img/user2-160x160.jpg" class="img-circle" alt="User Image">
 
                                         <p>
-                                            Alexander Pierce - Web Developer
-                                            <small>Member since Nov. 2012</small>
+                                            {{ auth()->user()->name }} - {{ auth()->user()->roles->first()->name }}
+                                            <small>
+                                                Desde: 
+                                                {{ auth()->user()->created_at->format('d-M-Y') }}
+                                            </small>
                                         </p>
-                                    </li>
-                                    <!-- Menu Body -->
-                                    <li class="user-body">
-                                        <div class="row">
-                                            <div class="col-xs-4 text-center">
-                                                <a href="#">Followers</a>
-                                            </div>
-                                            <div class="col-xs-4 text-center">
-                                                <a href="#">Sales</a>
-                                            </div>
-                                            <div class="col-xs-4 text-center">
-                                                <a href="#">Friends</a>
-                                            </div>
-                                        </div>
-                                        <!-- /.row -->
                                     </li>
                                     <!-- Menu Footer-->
                                     <li class="user-footer">
-                                        <div class="pull-left">
-                                            <a href="#" class="btn btn-default btn-flat">Profile</a>
-                                        </div>
-                                        <div class="pull-right">
-                                            <form action="{{ route('logout') }}" method="POST">
-                                                {{ csrf_field() }}
-                                                <input type="submit" value="Sign out" class="btn btn-default btn-flat">
-                                            </form>
-                                        </div>
+                                        <form action="{{ route('logout') }}" method="POST">
+                                            {{ csrf_field() }}
+                                            <input type="submit" value="Cerrar Sesion" class="btn btn-default btn-block">
+                                        </form>
                                     </li>
                                 </ul>
                             </li>
@@ -285,7 +268,7 @@
                                     <i class="menu-icon fa fa-birthday-cake bg-red"></i>
 
                                     <div class="menu-info">
-                                        <h4 class="control-sidebar-subheading">Langdon's Birthday</h4>
+                                        <h4 class="control-sidebar-subheading">Langdons Birthday</h4>
 
                                         <p>Will be 23 on April 24th</p>
                                     </div>
@@ -312,7 +295,6 @@
                             </li>
                         </ul>
                         <!-- /.control-sidebar-menu -->
-
                     </div>
                     <!-- /.tab-pane -->
                     <!-- Stats tab content -->
@@ -340,7 +322,7 @@
                 </div>
             </aside>
             <!-- /.control-sidebar -->
-            <!-- Add the sidebar's background. This div must be placed
+            <!-- Add the sidebars background. This div must be placed
                  immediately after the control sidebar -->
             <div class="control-sidebar-bg"></div>
         </div>

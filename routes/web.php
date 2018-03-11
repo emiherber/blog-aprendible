@@ -30,6 +30,9 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => 'auth
     Route::post('posts/{post}/photos', 'PhotosController@store')->name('admin.posts.photos.strore');
     
     Route::delete('photos/{photo}', 'PhotosController@destroy')->name('admin.photos.destroy');
+
+    Route::put('users/{user}/roles', 'UsersRolesController@update')->name('admin.users.roles.update');
+    Route::put('users/{user}/permissions', 'UsersPermissionsController@update')->name('admin.users.permissions.update');
 });
 
 // Authentication Routes...

@@ -28,7 +28,23 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    /**
+     * Inicio mutadores
+    */
+    public function setPasswordAttribute($password){
+        $this->attributes['password'] = bcrypt($password);
+    }
+    /**
+     * Fin mutadores
+     */
+
+    /**
+     * Inicio relaciones
+     */
     public function posts(){
         return $this->hasMany(Post::class);
     }
+    /**
+     * Fin relaciones
+     */
 }

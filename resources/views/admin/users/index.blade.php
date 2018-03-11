@@ -16,15 +16,10 @@
 <div class="box box-primary">
     <div class="box-header">
         <h3 class="box-title">Lista de usuarios</h3>
-        <button 
-            class="btn btn-primary pull-right"
-            data-toggle="modal" 
-            data-target="#myModal"
-            tabindex="-1"
-        >
+        <a href="{{ route('admin.users.create') }}" class="btn btn-primary pull-right">
             <i class="fa fa-plus"></i>
             Crear Usuario
-        </button>
+        </a>
     </div>
     <!-- /.box-header -->
     <div class="box-body">

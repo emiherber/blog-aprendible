@@ -2,19 +2,21 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
+use Spatie\Permission\Models\Permission;
+use App\Http\Requests\UpdateUserRequest;
 use App\Http\Controllers\Controller;
+use Spatie\Permission\Models\Role;
+use Illuminate\Http\Request;
 use App\User;
 
-class UsersController extends Controller
-{
+class UsersController extends Controller {
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
+    public function index() {
         $users = User::all();
         return view('admin.users.index', compact('users'));
     }
@@ -24,9 +26,11 @@ class UsersController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
+    public function create() {
+        $user = new User;
+        $permissions = Permission::pluck('name', 'id');
+        $roles = Role::with('permissions')->get();
+        return view('admin.users.create', compact('user', 'roles', 'permissions'));
     }
 
     /**
@@ -35,43 +39,54 @@ class UsersController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        //
+    public function store(Request $request) {
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+        ]);
+        $data['password'] = str_random(8);
+        $user = User::create($data);
+        if($request->filled('roles')){
+            $user->assignRole($request->roles);
+        }
+        if($request->filled('permissions')){
+            $user->givePermissionTo($request->permissions);
+        }        
+        return redirect()->route('admin.users.index')->with('exito', 'El usuario ha sido creado.');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  User $user
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
-    {
+    public function show(User $user) {
         return view('admin.users.show', compact('user'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  User $user
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        //
+    public function edit(User $user) {
+        $permissions = Permission::pluck('name', 'id');
+        $roles = Role::with('permissions')->get();
+        return view('admin.users.edit', compact('user', 'roles', 'permissions'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Http\Requests\UpdateUserRequest  $request
+     * @param  User $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        //
+    public function update(UpdateUserRequest $request, User $user) {
+        $user->update($request->validated());
+        return back()->with('exito', 'Usuario actualizado.');
     }
 
     /**
@@ -80,8 +95,8 @@ class UsersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
+    public function destroy($id) {
         //
     }
+
 }

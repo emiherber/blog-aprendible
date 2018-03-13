@@ -6,6 +6,7 @@ use Spatie\Permission\Models\Permission;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Controllers\Controller;
 use Spatie\Permission\Models\Role;
+use App\Events\UserWasCreated;
 use Illuminate\Http\Request;
 use App\User;
 
@@ -52,6 +53,8 @@ class UsersController extends Controller {
         if($request->filled('permissions')){
             $user->givePermissionTo($request->permissions);
         }        
+        // Disparamos el evento de envio de credenciales.
+        UserWasCreated::dispatch($user, $data['password']);
         return redirect()->route('admin.users.index')->with('exito', 'El usuario ha sido creado.');
     }
 

@@ -170,7 +170,7 @@
                                         <img src="/adminlte/img/user2-160x160.jpg" class="img-circle" alt="User Image">
 
                                         <p>
-                                            {{ auth()->user()->name }} - {{ auth()->user()->roles->first()->name }}
+                                            {{ auth()->user()->name }} - {{ optional(auth()->user()->roles->first())->name }}
                                             <small>
                                                 Desde: 
                                                 {{ auth()->user()->created_at->format('d-M-Y') }}

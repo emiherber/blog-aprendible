@@ -18,7 +18,7 @@ class UsersController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $users = User::all();
+        $users = User::allowed()->get();
         return view('admin.users.index', compact('users'));
     }
 
@@ -29,6 +29,7 @@ class UsersController extends Controller {
      */
     public function create() {
         $user = new User;
+        $this->authorize('create', $user);
         $permissions = Permission::pluck('name', 'id');
         $roles = Role::with('permissions')->get();
         return view('admin.users.create', compact('user', 'roles', 'permissions'));
@@ -41,18 +42,19 @@ class UsersController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request) {
+        $this->authorize('create', new User);
         $data = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
         ]);
         $data['password'] = str_random(8);
         $user = User::create($data);
-        if($request->filled('roles')){
+        if ($request->filled('roles')) {
             $user->assignRole($request->roles);
         }
-        if($request->filled('permissions')){
+        if ($request->filled('permissions')) {
             $user->givePermissionTo($request->permissions);
-        }        
+        }
         // Disparamos el evento de envio de credenciales.
         UserWasCreated::dispatch($user, $data['password']);
         return redirect()->route('admin.users.index')->with('exito', 'El usuario ha sido creado.');
@@ -65,6 +67,7 @@ class UsersController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function show(User $user) {
+        $this->authorize('view', $user);
         return view('admin.users.show', compact('user'));
     }
 
@@ -75,6 +78,7 @@ class UsersController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function edit(User $user) {
+        $this->authorize('update', $user);
         $permissions = Permission::pluck('name', 'id');
         $roles = Role::with('permissions')->get();
         return view('admin.users.edit', compact('user', 'roles', 'permissions'));
@@ -88,6 +92,7 @@ class UsersController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateUserRequest $request, User $user) {
+        $this->authorize('update', $user);
         $user->update($request->validated());
         return back()->with('exito', 'Usuario actualizado.');
     }

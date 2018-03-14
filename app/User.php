@@ -47,4 +47,16 @@ class User extends Authenticatable
     /**
      * Fin relaciones
      */
+    /**
+     * Inicio scope
+     */
+    public function scopeAllowed($query){
+        if(auth()->user()->can('view', $this)){
+            return $query;
+        }
+        return $query->where('id', auth()->id());
+    }
+    /**
+     * Fin scope
+     */
 }

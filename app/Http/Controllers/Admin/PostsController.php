@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Requests\StorePostRequest;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Http\Requests\StorePostRequest;
-use App\Post;
 use App\Category;
+use App\Post;
 use App\Tag;
 
 class PostsController extends Controller {
 
     public function index() {
-        $posts = Post::Allowed()->get();
+        $posts = Post::allowed()->get();
         return view('admin.posts.index', compact('posts'));
     }
 

@@ -17,6 +17,10 @@ class PermissionsTableSeeder extends Seeder
         Permission::create(['name' => 'Crear posts']);
         Permission::create(['name' => 'Actualizar posts']);
         Permission::create(['name' => 'Eliminar posts']);
+        Permission::create(['name' => 'Listar usuarios']);
+        Permission::create(['name' => 'Crear usuarios']);
+        Permission::create(['name' => 'Actualizar usuarios']);
+        Permission::create(['name' => 'Eliminar usuarios']);
         DB::statement('SET FOREIGN_KEY_CHECKS = 1;');
     }
 }

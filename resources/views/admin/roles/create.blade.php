@@ -7,7 +7,7 @@
 </h1>
 <ol class="breadcrumb">
     <li><a href="{{ route('admin') }}"><i class="fa fa-dashboard"></i> Inicio</a></li>
-    <li><a href="{{ route('admin.users.index') }}"><i class="fa fa-users"></i> Usuarios</a></li>
+    <li><a href="{{ route('admin.roles.index') }}"><i class="fa fa-users"></i> Roles</a></li>
     <li class="active">Crear</li>
 </ol>
 @stop
@@ -18,11 +18,11 @@
             <div class="box box-primary">
                 <div class="box-header with-border">
                     <h3 class="box-title">
-                        Datos Personales
+                        Crear Rol
                     </h3>
                 </div>
                 <div class="box-body">
-                    <form action="{{ route('admin.users.store') }}" method="post">
+                    <form action="{{ route('admin.roles.store') }}" method="post">
                         {{ csrf_field() }}
                         <div class="form-group {{ $errors->has('name') ? 'has-error':'' }}">
                             <label for="name">Nombre</label>
@@ -36,29 +36,25 @@
                             >
                             {!! $errors->first('name','<span class="help-block">:message</span>')!!}
                         </div>
-                        <div class="form-group {{ $errors->has('email') ? 'has-error':'' }}">
-                            <label for="email">Email</label>
-                            <input 
-                                type="text" 
-                                class="form-control" 
-                                name="email" 
-                                value="{{ old('email')}}"
-                                placeholder="Ingrese el email del usuario"
-                            >
-                            {!! $errors->first('email','<span class="help-block">:message</span>')!!}
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="roles">Roles</label>
-                            @include('admin.roles.checkboxes')
+                        <div class="form-group {{ $errors->has('guard_name') ? 'has-error':'' }}">
+                            <label for="guard_name">Guard</label>
+                            <select name="guard_name" class="form-control">
+                                @foreach(config('auth.guards') as $key => $value)
+                                    <option 
+                                        value="{{ $key }}"
+                                        {{ old('guard_name') === $key ? 'selected' : ''}}
+                                    >
+                                        {{ $key }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            {!! $errors->first('guard_name','<span class="help-block">:message</span>')!!}
                         </div>
                         <div class="form-group col-md-6">
                             <label for="permissions">Permisos</label>
-                            @include('admin.permissions.checkboxes', ['model' => $user])
+                            @include('admin.permissions.checkboxes',['model' => $role])
                         </div>
-                        <span class="help-block">
-                            La contraseña de sera generada y enviada vía email al nuevo usuario.
-                        </span>
-                        <input type="submit" value="Nuevo Usuario" class="btn btn-primary btn-block">
+                        <input type="submit" value="Nuevo Rol" class="btn btn-primary btn-block">
                     </form>
                 </div>
             </div>

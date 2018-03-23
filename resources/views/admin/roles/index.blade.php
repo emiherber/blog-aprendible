@@ -27,8 +27,9 @@
             <thead>
                 <tr>
                     <th>ID</th>
+                    <th>Identificador</th>
                     <th>Nombre</th>
-                    <th>Guard</th>
+                    <th>Permisos</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -37,32 +38,29 @@
                 <tr>
                     <td>{{ $role->id }}</td>
                     <td>{{ $role->name }}</td>
-                    <td>{{ $role->guard_name }}</td>
+                    <td>{{ $role->display_name }}</td>
+                    <td>{{ $role->permissions->pluck('display_name')->implode(', ') }}</td>
                     <td>
-                        <a 
-                            href="{{ route('admin.roles.show', $role) }}" 
-                            class="btn btn-default btn-xs"
-                        >
-                            <i class="fa fa-eye"></i>
-                        </a>
                         <a 
                         href="{{ route('admin.roles.edit', $role) }}"
                             class="btn btn-info btn-xs">
                             <i class="fa fa-pencil"></i>
                         </a>
-                        <form 
-                            method="post" 
-                            action="{{ route('admin.roles.destroy', $role) }}" 
-                            style="display: inline;"
-                        >
-                            {{ csrf_field() }} {{ method_field('delete') }}
-                            <button 
-                                class="btn btn-danger btn-xs"
-                                onclick="return confirm('¿Esta seguro de eliminar el rol?')"
+                        @if($role->id !== 1)
+                            <form 
+                                method="post" 
+                                action="{{ route('admin.roles.destroy', $role) }}" 
+                                style="display: inline;"
                             >
-                                <i class="fa fa-times"></i>
-                            </button>
-                        </form>                        
+                                {{ csrf_field() }} {{ method_field('delete') }}
+                                <button 
+                                    class="btn btn-danger btn-xs"
+                                    onclick="return confirm('¿Esta seguro de eliminar el rol?')"
+                                >
+                                    <i class="fa fa-times"></i>
+                                </button>
+                            </form>            
+                        @endif
                     </td>
                 </tr>
                 @endforeach

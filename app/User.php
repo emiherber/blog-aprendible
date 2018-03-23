@@ -47,6 +47,7 @@ class User extends Authenticatable
     /**
      * Fin relaciones
      */
+    
     /**
      * Inicio scope
      */

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Requests\SaveRolesRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Spatie\Permission\Models\Role;
@@ -16,6 +17,8 @@ class RolesController extends Controller
      */
     public function index()
     {
+        $this->authorize('view', new Role);
+
         return view('admin.roles.index', [
             'roles' => Role::all()
         ]);
@@ -28,8 +31,10 @@ class RolesController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', $role = new Role);
+
         return view('admin.roles.create', [
-            'role' => new Role,
+            'role' => $role,
             'permissions' => Permission::pluck('name', 'id')
         ]);
     }
@@ -37,17 +42,14 @@ class RolesController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request\SaveRolesRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(SaveRolesRequest $request)
     {
-        $data = $request->validate([
-            'name' => 'required',
-            'guard_name' => 'required'
-        ]);
+        $this->authorize('create', new Role);
 
-        $role = Role::create($data);
+        $role = Role::create($request->validated());
 
         if ($request->has('permissions')) {
             $role->givePermissionTo($request->permissions);
@@ -57,47 +59,57 @@ class RolesController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Role  $role)
     {
-        //
+        $this->authorize('update', $role);
+
+        return view('admin.roles.edit', [
+            'role' => $role,
+            'permissions' => Permission::pluck('name', 'id')
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request\SaveRolesRequest  $request
+     * @param  Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(SaveRolesRequest $request, Role $role)
     {
-        //
+        $this->authorize('update', $role);
+
+        $role->update($request->validated());
+
+        $role->permissions()->detach();
+
+        if ($request->has('permissions')) {
+            $role->givePermissionTo($request->permissions);
+        }
+
+        return redirect()->route('admin.roles.edit', $role)
+                        ->with('exito', 'El rol fue actualizado correctamente.');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Role  $role)
     {
-        //
+        $this->authorize('delete', $role);
+
+        $role->delete();
+
+        return redirect()->route('admin.roles.index')
+                        ->with('exito', 'El rol ha sido eliminado.');
     }
 }

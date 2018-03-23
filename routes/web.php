@@ -27,7 +27,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => 'auth
   
   Route::resource('users', 'UsersController', ['as' => 'admin']);
 
-  Route::resource('roles', 'RolesController', ['as' => 'admin']);
+  Route::resource('roles', 'RolesController', ['except' => 'show', 'as' => 'admin']);
       
   Route::post('posts/{post}/photos', 'PhotosController@store')->name('admin.posts.photos.strore');
   

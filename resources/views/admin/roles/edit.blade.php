@@ -3,12 +3,12 @@
 @section('contenido-header')
 <h1>
     Roles
-    <small>Crear Rol</small>
+    <small>Editar Rol</small>
 </h1>
 <ol class="breadcrumb">
     <li><a href="{{ route('admin') }}"><i class="fa fa-dashboard"></i> Inicio</a></li>
     <li><a href="{{ route('admin.roles.index') }}"><i class="fa fa-users"></i> Roles</a></li>
-    <li class="active">Crear</li>
+    <li class="active">Editar</li>
 </ol>
 @stop
 
@@ -18,13 +18,14 @@
             <div class="box box-primary">
                 <div class="box-header with-border">
                     <h3 class="box-title">
-                        Crear Rol
+                        Editar Rol
                     </h3>
                 </div>
                 <div class="box-body">
-                    <form action="{{ route('admin.roles.store') }}" method="post">
+                    <form action="{{ route('admin.roles.update', $role) }}" method="post">
+                        {{ method_field('PUT') }}
                         @include('admin.roles.form')
-                        <input type="submit" value="Nuevo Rol" class="btn btn-primary btn-block">
+                        <input type="submit" value="Editar Rol" class="btn btn-primary btn-block">
                     </form>
                 </div>
             </div>

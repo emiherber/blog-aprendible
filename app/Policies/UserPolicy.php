@@ -51,7 +51,7 @@ class UserPolicy
      */
     public function update(User $authuser, User $user)
     {
-        return $authuser->id === $user->id || $user->hasPermissionTo('Actualizar Usuarios');
+        return $authuser->id === $user->id || $user->hasPermissionTo('Actualizar usuarios');
     }
 
     /**
@@ -63,6 +63,6 @@ class UserPolicy
      */
     public function delete(User $authuser, User $user)
     {
-        return $authuser->id === $user->id || $user->hasPermissionTo('Eliminar Usuarios');
+        return $authuser->id === $user->id || $user->hasPermissionTo('Eliminar usuarios');
     }
 }

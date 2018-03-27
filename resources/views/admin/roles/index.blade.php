@@ -3,7 +3,7 @@
 @section('contenido-header')
 <h1>
     Roles
-    <small>Listado de usuarios</small>
+    <small>Listado</small>
 </h1>
 <ol class="breadcrumb">
     <li><a href="{{ route('admin') }}"><i class="fa fa-dashboard"></i> Inicio</a></li>
@@ -15,11 +15,13 @@
 @section('contenido')
 <div class="box box-primary">
     <div class="box-header">
-        <h3 class="box-title">Lista de usuarios</h3>
-        <a href="{{ route('admin.roles.create') }}" class="btn btn-primary pull-right">
-            <i class="fa fa-plus"></i>
-            Crear Rol
-        </a>
+        <h3 class="box-title">Listado de roles</h3>
+        @can('create', $roles->first())
+            <a href="{{ route('admin.roles.create') }}" class="btn btn-primary pull-right">
+                <i class="fa fa-plus"></i>
+                Crear Rol
+            </a>
+        @endcan
     </div>
     <!-- /.box-header -->
     <div class="box-body">
@@ -41,26 +43,30 @@
                     <td>{{ $role->display_name }}</td>
                     <td>{{ $role->permissions->pluck('display_name')->implode(', ') }}</td>
                     <td>
-                        <a 
-                        href="{{ route('admin.roles.edit', $role) }}"
-                            class="btn btn-info btn-xs">
-                            <i class="fa fa-pencil"></i>
-                        </a>
-                        @if($role->id !== 1)
-                            <form 
-                                method="post" 
-                                action="{{ route('admin.roles.destroy', $role) }}" 
-                                style="display: inline;"
-                            >
-                                {{ csrf_field() }} {{ method_field('delete') }}
-                                <button 
-                                    class="btn btn-danger btn-xs"
-                                    onclick="return confirm('¿Esta seguro de eliminar el rol?')"
+                        @can('update', $role)
+                            <a 
+                                href="{{ route('admin.roles.edit', $role) }}"
+                                class="btn btn-info btn-xs">
+                                <i class="fa fa-pencil"></i>
+                            </a>
+                        @endcan
+                        @can('delete', $role)
+                            @if($role->id !== 1)
+                                <form 
+                                    method="post" 
+                                    action="{{ route('admin.roles.destroy', $role) }}" 
+                                    style="display: inline;"
                                 >
-                                    <i class="fa fa-times"></i>
-                                </button>
-                            </form>            
-                        @endif
+                                    {{ csrf_field() }} {{ method_field('delete') }}
+                                    <button 
+                                        class="btn btn-danger btn-xs"
+                                        onclick="return confirm('¿Esta seguro de eliminar el rol?')"
+                                    >
+                                        <i class="fa fa-times"></i>
+                                    </button>
+                                </form>            
+                            @endif
+                        @endcan
                     </td>
                 </tr>
                 @endforeach

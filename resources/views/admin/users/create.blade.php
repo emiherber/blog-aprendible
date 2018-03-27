@@ -49,7 +49,7 @@
                         </div>
                         <div class="form-group col-md-6">
                             <label for="roles">Roles</label>
-                            @include('admin.roles.checkboxes')
+                            @include('admin.roles.checkboxes',['model' => $user])
                         </div>
                         <div class="form-group col-md-6">
                             <label for="permissions">Permisos</label>

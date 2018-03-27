@@ -5,7 +5,7 @@
         <input 
             type="text" 
             class="form-control" 
-            value="{{ $role->name}}"
+            value="{{ $role->name }}"
             placeholder="Ingrese el identificador del rol"
             disabled 
         >
@@ -14,7 +14,7 @@
             type="text" 
             name="name" 
             class="form-control" 
-            value="{{ old('name', $role->name)}}"
+            value="{{ old('name', $role->name) }}"
             placeholder="Ingrese el identificador del rol"
             autofocus
         >

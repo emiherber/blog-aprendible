@@ -28,7 +28,9 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => 'auth
   Route::resource('users', 'UsersController', ['as' => 'admin']);
 
   Route::resource('roles', 'RolesController', ['except' => 'show', 'as' => 'admin']);
-      
+  
+  Route::resource('permissions', 'PermissionsController', ['only' => ['index', 'edit', 'update'], 'as' => 'admin']);
+
   Route::post('posts/{post}/photos', 'PhotosController@store')->name('admin.posts.photos.strore');
   
   Route::delete('photos/{photo}', 'PhotosController@destroy')->name('admin.photos.destroy');

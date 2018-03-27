@@ -15,7 +15,6 @@ class Post extends Model
      * Definimos como una instancia de carbon
      */
     protected $dates = ['published_at'];
-
     /*
      * Redifinimos por cual parametros queremos que nos 
      * devuelva un post
@@ -109,9 +108,10 @@ class Post extends Model
      * Inicio scope
      */
     public function scopePublished($query){
-        $query->whereNotnull('published_at')
-                ->where('published_at', '<=', Carbon::now())
-                ->latest('published_at');
+        $query->with(['category', 'tags', 'owner', 'photos'])
+            ->whereNotnull('published_at')
+            ->where('published_at', '<=', Carbon::now())
+            ->latest('published_at');
     }
 
     public function scopeAllowed($query){
@@ -119,6 +119,16 @@ class Post extends Model
             return $query;
         }
         return $query->where('user_id', auth()->id());
+    }
+
+    public function scopeByYearAndMonth($query){
+        return $query->selectRaw('year(published_at) as year')
+                ->selectRaw('monthName(published_at) as monthName')
+                ->selectRaw('month(published_at) as month')
+                ->selectRaw('count(id) as posts')
+                ->groupBy('year', 'monthName', 'month')
+                ->orderBy('published_at')
+                ->get();
     }
     /**
      * Fin scope
